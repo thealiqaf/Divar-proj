@@ -2,12 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRoutes = require("./api/router/user");
+const categoryRoutes = require("./api/router/category");
+const cityRoutes = require("./api/router/city");
+const authRoutes = require("./api/router/auth");
+const adminRoutes = require("./api/router/admin");
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/cities", cityRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL)

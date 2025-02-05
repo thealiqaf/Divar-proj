@@ -26,7 +26,7 @@ exports.createCategory = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.find().select('name');
         res.status(200).json(categories);
     } catch (error) {
         console.log(error);
@@ -80,18 +80,19 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
     try {
-        const category = await category.findByIdandDelete(req.params.id);
+        const category = await Category.findById(req.params.id);
         if (!category) {
             console.log('Category not found');
             return res.status(404).json({
                 message: 'Category not found'
             });
         }
+        await category.deleteOne();
         console.log('Category deleted');
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            error: err
+            error: error
         });
     }
 };
