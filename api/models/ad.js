@@ -4,7 +4,7 @@ const adSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    productImage: { type: [String], default: [] },
+    image: { type: [String], default: [] },
     city: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'City' },
     category: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Category' },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
