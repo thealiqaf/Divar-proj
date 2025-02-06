@@ -45,7 +45,7 @@ const loginUser = async (req, res) => {
         const { email, password } = req.body;
 
 
-        const user = await User.findOne({ email });
+        const user = await User.find({ email });
         if (!user) {
             return res.status(400).json({ message: "User not found" });
         }
@@ -58,7 +58,8 @@ const loginUser = async (req, res) => {
 
 
         const token = jwt.sign(
-            { userId: user._id, role: user.role },
+            { userId: user._id,
+                role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
@@ -107,7 +108,7 @@ const loginUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const user = await User.find().select("name email createdAt");
+        const user = await User.find().select("name email createdAt role");
         res.json(user);
     } catch (error) {
         console.log(error);

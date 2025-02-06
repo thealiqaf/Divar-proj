@@ -6,6 +6,8 @@ const categoryRoutes = require("./api/router/category");
 const cityRoutes = require("./api/router/city");
 const authRoutes = require("./api/router/auth");
 const adminRoutes = require("./api/router/admin");
+const AdRoutes = require('./api/router/ad');
+const pendingAdsRoutes = require('./api/router/ad');
 
 dotenv.config();
 const app = express();
@@ -16,6 +18,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/cities", cityRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/ads", AdRoutes);
+app.use("/api/ads", pendingAdsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL)

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const citySchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    name: { type: String, required: true },
+const citySchema = new mongoose.Schema({
+    // _id: mongoose.Schema.Types.ObjectId,
+    name: { type: String, required: true }
 },
     { timestamps: true }
 );

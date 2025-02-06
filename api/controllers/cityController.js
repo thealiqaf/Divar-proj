@@ -1,4 +1,5 @@
 const City = require('../models/city');
+const mongoose = require('mongoose');
 
 exports.createCity = async (req, res) => {
     try {
@@ -9,7 +10,8 @@ exports.createCity = async (req, res) => {
                 message: 'Name of city is required'
             });
         }
-        const city = new City( { name } );
+        const _id = new mongoose.Types.ObjectId;
+        const city = new City( { name, _id } );
         await city.save();
 
         console.log('City created');
