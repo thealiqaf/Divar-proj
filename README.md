@@ -30,7 +30,7 @@ The platform includes authentication, authorization, pagination, filtering, emai
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/divar-clone.git
+   git clone https://github.com/thealiqaf/Divar-proj.git
    cd divar-clone
    ```
 
