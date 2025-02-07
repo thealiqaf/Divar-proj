@@ -1,6 +1,28 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../utils/sendEmail');
+const user = require('../models/user');
+
+const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await User.findByOne( { email: decoded.email } );
+        if (!user) {    
+            return res.status(400).json({ message: "Invalid token" });
+        }
+
+        user.isValidated = true;
+        user.emailToken = null;
+        await user.save();
+
+        res.status(200).json({ message: "Email verified successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Invalid or exoired token" });
+    }
+};
 
 const registerUser = async (req, res) => {
     try {
@@ -28,10 +50,11 @@ const registerUser = async (req, res) => {
     const newUser = new User({ name, email, password });
         await newUser.save();
 
-        console.log('User created successfully');
-        res.status(201).json({
-            message: 'User created successfully'
-        });
+        const confirmLink = `${proccess.env.BASE_URL}/api/auth/verify-email/${user.mailToken}`;
+        await sendEmail(email, "Verify Your Email", `Click here to verify your email: ${confirmLink}`);
+
+        res.status(201).json({ message: "User registered. Please verify your email." });
+
     } catch (error) {   
         console.log(error);
         res.status(500).json({
@@ -56,6 +79,9 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Wrong password" });
         }
 
+        if(!user.isVerified) {
+            return res.status(403).json({ message: "Please verify your email first." });
+        }
 
         const token = jwt.sign(
             { userId: user._id,
@@ -159,4 +185,4 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = { registerUser, getUsers, deleteUser, getUserById, loginUser };
+module.exports = { registerUser, getUsers, deleteUser, getUserById, loginUser, verifyEmail };
